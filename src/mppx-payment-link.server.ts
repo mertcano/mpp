@@ -7,7 +7,9 @@ import { mppxSecretKey } from "./mppx-secret.server";
 const realm = process.env.REALM ?? "mpp.tempo.xyz";
 
 const feePayerKey = process.env.FEE_PAYER_PRIVATE_KEY;
-if (!feePayerKey && !import.meta.env.DEV) {
+const isBuildPhase = process.env.npm_lifecycle_event === "build";
+
+if (!feePayerKey && !import.meta.env.DEV && !isBuildPhase) {
   throw new Error("FEE_PAYER_PRIVATE_KEY is required outside development/test");
 }
 
@@ -39,7 +41,6 @@ export const mppx = Mppx.create({
           fontFamily: "'Geist', system-ui, sans-serif",
           fontSizeBase: "16px",
           foreground: ["#0a0a0a", "#fafafa"],
-
           muted: ["#737373", "#a3a3a3"],
           negative: ["#ef4444", "#f87171"],
           positive: ["#22c55e", "#4ade80"],
